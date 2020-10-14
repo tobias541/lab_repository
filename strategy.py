@@ -15,7 +15,7 @@ class read_comma(Strategy):
         return pd.read_csv(path, ',')
 
 
-class read_xml(Strategy):
+class read_json(Strategy):
     def execute(self, path):
         with open(path, 'r', encoding='utf-8') as f:
             text = json.load(f)
@@ -25,7 +25,6 @@ class read_xml(Strategy):
 
 if __name__ == "__main__":
     reader_csv = reader(read_comma())
-    reader_xml = reader(read_xml())
+    reader_xml = reader(read_json())
     print(reader_csv.strategy.execute('comma.csv'))
     print(reader_xml.strategy.execute('json_exmpl.json'))
-

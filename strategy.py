@@ -25,6 +25,6 @@ class read_json(Strategy):
 
 if __name__ == "__main__":
     reader_csv = reader(read_comma())
-    reader_xml = reader(read_json())
+    reader_json = reader(read_json())
     print(reader_csv.strategy.execute('comma.csv'))
-    print(reader_xml.strategy.execute('json_exmpl.json'))
+    print(reader_json.strategy.execute('json_exmpl.json'))

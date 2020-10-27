@@ -1,0 +1,137 @@
+import random
+
+
+class Staff():
+#работник цветочного магазина - посетитель
+
+    def visit_customer(self, Customer):
+        pass
+
+
+class Customer():
+#покупатель - делает заказ букета называя несколько его особенностей
+
+    def __init__(self, name):
+        self.name = name
+        self.color = "не указаны"
+        self.type  = "не указаны"
+        self.order = "не выдан"
+
+    def __str__(self):
+        return (f"Клиент: {self.name}\n" +
+            f"\t\tПожелание цвета: {self.color}\n" +
+            f"\t\tПожелание особенностей: {self.type}\n" +
+            f"\t\tЗаказ: {self.order}")
+
+    def choose_color(self):
+        self.color = random.choice(["Красный", "Фиолетовый", "Белый"])
+        print(f"\t\tВыбран цвет: {self.color}")
+
+    def choose_type(self):
+        self.type = random.choice(["Составной", "Однотипный"])
+        print(f"\t\tВыбрана желаемая структура: {self.type}")
+
+    def accept(self, Staff=Staff):
+        print(f"Клиент: {self.name}")
+        Staff.visit_customer(self)
+
+
+class Flower_shop():
+#Магазин  цветов, в нем клиенты делают заказы
+
+    def __init__(self, ward_num, Customer_names):
+        self.ward_num = ward_num
+        self.Customers = []
+        for name in Customer_names:
+            self.Customers.append(Customer(name))
+
+    def __str__(self):
+        result = f"Заказ №{self.ward_num}\n"
+        for Customer in self.Customers:
+            result +=  str(Customer) + "\n"
+        return result[:-1]
+
+    def accept(self, Staff=Staff):
+        print(f"Заказ №{self.ward_num}")
+        for Customer in self.Customers:
+            Customer.accept(Staff)
+
+
+class Cashier(Staff):
+#кассир, принимает заказ и передает пожелания флористу
+    def visit_customer(self, Customer=Customer):
+        Customer.choose_color()
+        Customer.choose_type()
+
+
+class Florist(Staff):
+#флорист собирает букет
+    def visit_customer(self, Customer=Customer):
+        if   Customer.color == "Красный" and Customer.type == "Составной":
+             Customer.order = "букет из розы и ликориса"
+        elif Customer.color == "Красный" and Customer.type == "Однотипный":
+             Customer.order = "букет пионов"
+        elif Customer.color == "Фиолетовый" and Customer.type == "Составной":
+             Customer.order = "букет из ириса и лаванды"
+        elif Customer.color == "Фиолетовый" and Customer.type == "Однотипный":
+             Customer.order = "букет из гиацинтов"
+        elif Customer.color == "Белый" and Customer.type == "Составной":
+             Customer.order = "букет из ромашек и лилий"
+        elif Customer.color == "Белый" and Customer.type == "Однотипный":
+             Customer.order = "букет из эустомы"
+        else:
+            Customer.order = "уточните пожелания"
+        print(f"\t\tСобранный букет: {Customer.order}")
+
+
+class OrderLooper():
+#итератор проходит по списку заказов
+    def __init__(self, collection=[]):
+        self.collection = collection
+        self.cursor = 0
+
+    def current(self):
+        if self.cursor < len(self.collection):
+            return self.collection[self.cursor]
+
+    def next(self):
+        if len(self.collection) >= self.cursor + 1:
+            self.cursor += 1
+
+    def has_next(self):
+        has = len(self.collection) >= self.cursor + 1
+        if not has: self.cursor = 0
+        return has
+
+    def add(self, item):
+        self.collection.append(item)
+
+
+if __name__ == '__main__':
+    wards = OrderLooper()
+    wards.add(Flower_shop(1, ["Александр"]))
+    wards.add(Flower_shop(2, ["Антон"]))
+    wards.add(Flower_shop(3, ["Кирилл"]))
+
+
+    print("Клиенты")
+    while wards.has_next():
+        print(str(wards.current()))
+        wards.next()
+
+    print("\n\nПожелания к букету кассиру")
+    Cashier = Cashier()
+    while wards.has_next():
+        wards.current().accept(Cashier)
+        wards.next()
+
+    print("\n\nИтоговый букет от флориста")
+    doc = Florist()
+    while wards.has_next():
+        wards.current().accept(doc)
+        wards.next()
+
+    print("\n\nРезультат")
+    while wards.has_next():
+        print(str(wards.current()))
+        wards.next()

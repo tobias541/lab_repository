@@ -126,9 +126,9 @@ if __name__ == '__main__':
         orders.next()
 
     print("\n\nИтоговый букет от флориста")
-    doc = Florist()
+    Florist = Florist()
     while orders.has_next():
-        orders.current().accept(doc)
+        orders.current().accept(Florist)
         orders.next()
 
     print("\n\nРезультат")

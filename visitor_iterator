@@ -39,20 +39,20 @@ class Customer():
 class Flower_shop():
 #Магазин  цветов, в нем клиенты делают заказы
 
-    def __init__(self, ward_num, Customer_names):
-        self.ward_num = ward_num
+    def __init__(self, order_num, Customer_names):
+        self.order_num = order_num
         self.Customers = []
         for name in Customer_names:
             self.Customers.append(Customer(name))
 
     def __str__(self):
-        result = f"Заказ №{self.ward_num}\n"
+        result = f"Заказ №{self.order_num}\n"
         for Customer in self.Customers:
             result +=  str(Customer) + "\n"
         return result[:-1]
 
     def accept(self, Staff=Staff):
-        print(f"Заказ №{self.ward_num}")
+        print(f"Заказ №{self.order_num}")
         for Customer in self.Customers:
             Customer.accept(Staff)
 

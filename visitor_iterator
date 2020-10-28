@@ -108,30 +108,30 @@ class OrderLooper():
 
 
 if __name__ == '__main__':
-    wards = OrderLooper()
-    wards.add(Flower_shop(1, ["Александр"]))
-    wards.add(Flower_shop(2, ["Антон"]))
-    wards.add(Flower_shop(3, ["Кирилл"]))
+    orders = OrderLooper()
+    orders.add(Flower_shop(1, ["Александр"]))
+    orders.add(Flower_shop(2, ["Антон"]))
+    orders.add(Flower_shop(3, ["Кирилл"]))
 
 
     print("Клиенты")
-    while wards.has_next():
-        print(str(wards.current()))
-        wards.next()
+    while orders.has_next():
+        print(str(orders.current()))
+        orders.next()
 
     print("\n\nПожелания к букету кассиру")
     Cashier = Cashier()
-    while wards.has_next():
-        wards.current().accept(Cashier)
-        wards.next()
+    while orders.has_next():
+        orders.current().accept(Cashier)
+        orders.next()
 
     print("\n\nИтоговый букет от флориста")
     doc = Florist()
-    while wards.has_next():
-        wards.current().accept(doc)
-        wards.next()
+    while orders.has_next():
+        orders.current().accept(doc)
+        orders.next()
 
     print("\n\nРезультат")
-    while wards.has_next():
-        print(str(wards.current()))
-        wards.next()
+    while orders.has_next():
+        print(str(orders.current()))
+        orders.next()

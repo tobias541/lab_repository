@@ -1,0 +1,70 @@
+class ConnectionKind:
+    Ssh = 'SSH'
+    Telnet = 'Telnet'
+
+
+class Connection:
+    def __init__(self):
+        self.kind = None
+        self.ip = None
+        self.port = None
+
+    def __str__(self):
+        return f'Connection <kind = {self.kind}, ip = {self.ip}, port = {self.port}>'
+
+
+class ConnectionBuilder:
+    def __init__(self):
+        self.connection = Connection()
+
+    def with_kind(self, kind):
+        self.connection.kind = kind
+
+    def with_ip(self, ip):
+        self.connection.ip = ip
+
+    def with_port(self, port):
+        self.connection.port = port
+
+    def build(self):
+        return self.connection
+
+
+class AbstractConnectionFactory:
+    # -> аннотация типов (type hinting)
+    def make_connection(self, ip: str) -> Connection:
+        pass
+
+
+class SshConnectionFactory(AbstractConnectionFactory):
+    def make_connection(self, ip: str) -> Connection:
+        builder = ConnectionBuilder()
+        builder.with_port(22)
+        builder.with_ip(ip)
+        builder.with_kind(ConnectionKind.Ssh)
+        return builder.build()
+
+
+class TelnetConnectionFactory(AbstractConnectionFactory):
+    def make_connection(self, ip: str) -> Connection:
+        builder = ConnectionBuilder()
+        builder.with_port(23)
+        builder.with_ip(ip)
+        builder.with_kind(ConnectionKind.Telnet)
+        return builder.build()
+
+
+def do_something(factory: AbstractConnectionFactory):
+    connection = factory.make_connection('127.0.0.1')
+    print(f'{connection}')
+
+
+def main():
+    do_something(SshConnectionFactory())
+    do_something(TelnetConnectionFactory())
+
+    pass
+
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,85 @@
+import random
+import time
+
+
+class UiElement:
+    def __init__(self):
+        self.on_button_down = None
+        self.on_button_up = None
+        self.on_focus = None
+
+    def set_on_button_down(self, l):
+        self.on_button_down = l
+
+    def set_on_button_up(self, l):
+        self.on_button_up = l
+
+    def set_on_focus(self, l):
+        self.on_focus = l
+
+
+class Ui:
+    def __init__(self):
+        self.text = "Hello, there!"
+        self._elements = None
+
+    def add_elements(self, elements):
+        self._elements = elements
+
+    def run(self):
+        while True:
+            event = random.randint(0, 100)
+
+            for e in self._elements:
+                if 0 <= event < 34:
+                    e.on_button_down(self)
+                elif 34 <= event < 67:
+                    e.on_button_up(self)
+                elif 67 <= event < 100:
+                    e.on_focus(self)
+                else:
+                    print("Папався")
+
+            time.sleep(1)
+            pass
+#-------------------------------------------------------------------------------------------------
+
+def on_focus_default(ui: Ui):
+    print(f"Call on_focus(...)")
+    print(f"Ui text: {ui.text}")
+    # reverse string, just for fun
+    ui.text = ui.text[::-1]
+
+
+def on_button_up_default(ui: Ui):
+    print(f"Call on_button_up(...)")
+    print(f"Ui text: {ui.text}")
+    # reverse string, just for fun
+    ui.text = ui.text[::-1]
+
+
+def on_button_down_default(ui: Ui):
+    print(f"Call on_button_down(...)")
+    print(f"Ui text: {ui.text}")
+    # reverse string, just for fun
+    ui.text = ui.text[::-1]
+
+
+def main():
+    # контейнер Ui элементов
+    ui = Ui()
+
+    # создание элемента
+    element = UiElement()
+    # set_on_focus сохраняет функцию on_focus_default в element
+    element.set_on_focus(on_focus_default)
+    element.set_on_button_up(on_button_up_default)
+    element.set_on_button_down(on_button_down_default)
+
+    ui.add_elements([element])
+
+    ui.run()
+
+
+if __name__ == '__main__':
+    main()
